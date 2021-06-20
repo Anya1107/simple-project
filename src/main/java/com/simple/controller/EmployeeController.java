@@ -15,15 +15,15 @@ import java.util.List;
 @AllArgsConstructor
 public class EmployeeController {
 
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
-    @GetMapping(path = "/findById/{id}")
-    public EmployeeDto findById(@PathVariable long id){
+    @GetMapping(path = "/{id}")
+    public EmployeeDto findById(@PathVariable long id) {
         return employeeService.findById(id);
     }
 
     @GetMapping
-    public List<EmployeeDto> findAll(){
+    public List<EmployeeDto> findAll() {
         return employeeService.findAll();
     }
 }
