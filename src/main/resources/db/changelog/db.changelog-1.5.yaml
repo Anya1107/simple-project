@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6
+      author: anya
+      changes:
+        - createTable:
+            tableName: employees_card_accounts
+            columns:
+              - column:
+                  name: employee_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: card_accounts_id
+                  type: bigint
+                  constraints:
+                    nullable: false

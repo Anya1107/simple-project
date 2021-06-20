@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 9
+      author: anya
+      changes:
+        - addColumn:
+            tableName: employees
+            columns:
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
