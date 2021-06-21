@@ -18,26 +18,22 @@ public class LogicStatusMapper {
     private LogicStatusProperties logicStatusProperties;
 
     public CardDto convertLogicStatus(CardDto cardDto){
-        convert(cardDto);
+        convertStatusField(cardDto);
         return cardDto;
     }
 
     public List<CardDto> convertLogicStatuses(List<CardDto> cardDtos){
         for (CardDto cardDto : cardDtos) {
-            convert(cardDto);
+            convertStatusField(cardDto);
         }
         return cardDtos;
     }
 
-    private CardDto convert(CardDto cardDto) {
+    private void convertStatusField(CardDto cardDto) {
         String logicStatus = cardDto.getLogicStatus();
         String defaultMessage = logicStatusProperties.getDefaultMessage();
         String status = logicStatusProperties.getLogicStatuses().get(logicStatus);
-        if(status != null){
-            cardDto.setLogicStatus(status);
-        } else {
-            cardDto.setLogicStatus(defaultMessage);
-        }
-        return cardDto;
+
+        cardDto.setLogicStatus(status != null ? status : defaultMessage);
     }
 }

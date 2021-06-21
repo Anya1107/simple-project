@@ -57,7 +57,7 @@ public class CardService {
         if(cardDto.getLogicStatus() != null){
             card.setLogicStatus(cardDto.getLogicStatus());
         }
-        cardRepository.save(card);
-        return cardMapper.convertToDto(card);
+        card = cardRepository.save(card);
+        return logicStatusMapper.convertLogicStatus(cardMapper.convertToDto(card));
     }
 }
