@@ -58,7 +58,7 @@ public class EmployeeService {
         if(employeeDto.getStatus() != null){
             employee.setStatus(employeeDto.getStatus());
         }
-        employeeRepository.save(employee);
+        employee = employeeRepository.save(employee);
         return employeeMapper.convertToDto(employee);
     }
 }

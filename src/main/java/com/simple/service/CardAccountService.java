@@ -48,7 +48,7 @@ public class CardAccountService {
     public CardAccountDto update(long id, CardAccountDto cardAccountDto){
         CardAccount cardAccount = cardAccountRepository.findById(id).orElseThrow(NullPointerException::new);
         updateCardAccountFromRequestDto(cardAccount, cardAccountDto);
-        cardAccountRepository.save(cardAccount);
+        cardAccount = cardAccountRepository.save(cardAccount);
         return cardAccountMapper.convertToDto(cardAccount);
     }
 
