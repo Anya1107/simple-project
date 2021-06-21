@@ -21,7 +21,7 @@ public class CardAccountController {
 
     private final CardAccountService cardAccountService;
 
-    @PostMapping(path = "/employees/{id}/cardAccounts")
+    @PostMapping(path = "/employees/{id}")
     public CardAccountDto add(@PathVariable long id, @RequestBody CardAccountDto cardAccountDto){
         return cardAccountService.add(id, cardAccountDto);
     }
@@ -41,12 +41,12 @@ public class CardAccountController {
         return cardAccountService.findAll();
     }
 
-    @GetMapping(path = "/employees/{id}/cardAccounts")
+    @GetMapping(path = "/employees/{id}")
     public List<CardAccountDto> findAllByEmployee(@PathVariable long id){
         return cardAccountService.findAllByEmployee(id);
     }
 
-    @PutMapping(path = "{id}")
+    @PutMapping(path = "/{id}")
     public CardAccountDto update(@PathVariable long id, @RequestBody CardAccountDto cardAccountDto){
         return cardAccountService.update(id, cardAccountDto);
     }

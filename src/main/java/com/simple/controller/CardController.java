@@ -21,9 +21,9 @@ public class CardController {
 
     private final CardService cardService;
 
-    @PostMapping
-    public CardDto add(@RequestBody CardDto cardDto){
-        return cardService.add(cardDto);
+    @PostMapping(path = "/cardAccounts/{id}")
+    public CardDto add(@PathVariable long id, @RequestBody CardDto cardDto){
+        return cardService.add(id, cardDto);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -41,7 +41,7 @@ public class CardController {
         return cardService.findAll();
     }
 
-    @PutMapping(path = "{id}")
+    @PutMapping(path = "/{id}")
     public CardDto update(@PathVariable long id, @RequestBody CardDto cardDto){
         return cardService.update(id, cardDto);
     }

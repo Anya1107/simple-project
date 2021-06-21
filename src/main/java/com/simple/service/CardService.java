@@ -21,10 +21,11 @@ public class CardService {
     private final CardMapper cardMapper;
 
     @Transactional
-    public CardDto add(CardDto cardDto){
-        CardAccount cardAccount = new CardAccount();
-        cardAccount.setId(cardDto.getCardAccountId());
-        cardRepository.save(cardMapper.convertFromDto(cardDto, cardAccount));
+    public CardDto add(long cardAccountId, CardDto cardDto){
+        CardAccount cardAccount = cardAccountRepository.findById(cardAccountId).orElseThrow(NullPointerException::new);
+        Card card = cardMapper.convertFromDto(cardDto);
+        card.setCardAccount(cardAccount);
+        cardRepository.save(card);
         return cardDto;
     }
 
@@ -45,9 +46,16 @@ public class CardService {
 
     public CardDto update(long id, CardDto cardDto){
         Card card = cardRepository.findById(id).orElseThrow(NullPointerException::new);
-        card.setCardFirstName(cardDto.getCardFirstName());
-        card.setCardLastName(cardDto.getCardLastName());
-        card.setLogicStatus(cardDto.getLogicStatus());
+        if(cardDto.getCardFirstName() != null){
+            card.setCardFirstName(cardDto.getCardFirstName());
+        }
+        if(cardDto.getCardLastName() != null){
+            card.setCardLastName(cardDto.getCardLastName());
+        }
+        if(cardDto.getLogicStatus() != null){
+            card.setLogicStatus(cardDto.getLogicStatus());
+        }
+        cardRepository.save(card);
         return cardMapper.convertToDto(card);
     }
 }

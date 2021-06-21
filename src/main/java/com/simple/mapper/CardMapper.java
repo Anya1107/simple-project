@@ -16,18 +16,18 @@ public class CardMapper {
     public CardDto convertToDto(Card card){
         return CardDto.builder()
                 .logicStatus(card.getLogicStatus())
+                .number(card.getNumber())
                 .cardFirstName(card.getCardFirstName())
                 .cardLastName(card.getCardLastName())
-                .cardAccountId(card.getCardAccount().getId())
                 .build();
     }
 
-    public Card convertFromDto(CardDto cardDto, CardAccount cardAccount){
+    public Card convertFromDto(CardDto cardDto){
         return Card.builder()
                 .logicStatus(cardDto.getLogicStatus())
+                .number(cardDto.getNumber())
                 .cardFirstName(cardDto.getCardFirstName())
                 .cardLastName(cardDto.getCardLastName())
-                .cardAccount(cardAccount)
                 .build();
     }
 

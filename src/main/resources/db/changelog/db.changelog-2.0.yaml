@@ -1,5 +1,4 @@
 databaseChangeLog:
-  databaseChangeLog:
     - changeSet:
         id: 11
         author: anya

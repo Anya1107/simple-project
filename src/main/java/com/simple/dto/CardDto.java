@@ -13,7 +13,7 @@ import lombok.Setter;
 @Builder
 public class CardDto {
     private String logicStatus;
+    private String number;
     private String cardFirstName;
     private String cardLastName;
-    private Long cardAccountId;
 }

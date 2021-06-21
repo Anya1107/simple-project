@@ -40,12 +40,25 @@ public class EmployeeService {
 
     public EmployeeDto update(long id, EmployeeDto employeeDto){
         Employee employee = employeeRepository.findById(id).orElseThrow(NullPointerException::new);
-        employee.setFirstName(employeeDto.getFirstName());
-        employee.setLastName(employeeDto.getLastName());
-        employee.setPatronymic(employeeDto.getPatronymic());
-        employee.setIdNumber(employeeDto.getIdNumber());
-        employee.setBirthDate(employeeDto.getBirthDate());
-        employee.setStatus(employeeDto.getStatus());
+        if(employeeDto.getFirstName() != null){
+            employee.setFirstName(employeeDto.getFirstName());
+        }
+        if(employeeDto.getLastName() != null){
+            employee.setLastName(employeeDto.getLastName());
+        }
+        if(employeeDto.getPatronymic() != null){
+            employee.setPatronymic(employeeDto.getPatronymic());
+        }
+        if(employeeDto.getIdNumber() != null){
+            employee.setIdNumber(employeeDto.getIdNumber());
+        }
+        if(employeeDto.getBirthDate() != null){
+            employee.setBirthDate(employeeDto.getBirthDate());
+        }
+        if(employeeDto.getStatus() != null){
+            employee.setStatus(employeeDto.getStatus());
+        }
+        employeeRepository.save(employee);
         return employeeMapper.convertToDto(employee);
     }
 }

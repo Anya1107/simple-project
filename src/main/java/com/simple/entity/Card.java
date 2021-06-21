@@ -30,11 +30,13 @@ public class Card {
 
     private String logicStatus;
 
+    private String number;
+
     private String cardFirstName;
 
     private String cardLastName;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "card_account_id")
+    @JoinColumn(name = "employee_id")
     private CardAccount cardAccount;
 }

@@ -52,9 +52,16 @@ public class CardAccountService {
 
     public CardAccountDto update(long id, CardAccountDto cardAccountDto){
         CardAccount cardAccount = cardAccountRepository.findById(id).orElseThrow(NullPointerException::new);
-        cardAccount.setBill_number(cardAccountDto.getBill_number());
-        cardAccount.setCurrency(cardAccountDto.getCurrency());
-        cardAccount.setStatus(cardAccountDto.getStatus());
+        if(cardAccountDto.getBill_number() != null){
+            cardAccount.setBill_number(cardAccountDto.getBill_number());
+        }
+        if(cardAccountDto.getCurrency() != null){
+            cardAccount.setCurrency(cardAccountDto.getCurrency());
+        }
+        if(cardAccountDto.getStatus() != null){
+            cardAccount.setStatus(cardAccountDto.getStatus());
+        }
+        cardAccountRepository.save(cardAccount);
         return cardAccountMapper.convertToDto(cardAccount);
     }
 }
