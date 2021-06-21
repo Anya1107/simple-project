@@ -39,8 +39,8 @@ public class CardService {
         return cardMapper.convertToDto(card);
     }
 
-    public List<CardDto> findAll(){
-        List<Card> cards = cardRepository.findAll();
+    public List<CardDto> findAllByCardAccountId(long cardAccId){
+        List<Card> cards = cardRepository.findAllByCardAccountId(cardAccId);
         return cardMapper.convertListToDto(cards);
     }
 

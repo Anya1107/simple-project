@@ -39,11 +39,6 @@ public class CardAccountService {
         return cardAccountMapper.convertToDto(cardAccount);
     }
 
-    public List<CardAccountDto> findAll(){
-        List<CardAccount> cardAccounts = cardAccountRepository.findAll();
-        return cardAccountMapper.convertListToDto(cardAccounts);
-    }
-
     public List<CardAccountDto> findAllByEmployee(long employeeId){
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(NullPointerException::new);
         List<CardAccount> cardAccounts = cardAccountRepository.findAllByEmployee(employee);
@@ -52,6 +47,12 @@ public class CardAccountService {
 
     public CardAccountDto update(long id, CardAccountDto cardAccountDto){
         CardAccount cardAccount = cardAccountRepository.findById(id).orElseThrow(NullPointerException::new);
+        updateCardAccountFromRequestDto(cardAccount, cardAccountDto);
+        cardAccountRepository.save(cardAccount);
+        return cardAccountMapper.convertToDto(cardAccount);
+    }
+
+    private void updateCardAccountFromRequestDto(CardAccount cardAccount, CardAccountDto cardAccountDto) {
         if(cardAccountDto.getBill_number() != null){
             cardAccount.setBill_number(cardAccountDto.getBill_number());
         }
@@ -61,7 +62,5 @@ public class CardAccountService {
         if(cardAccountDto.getStatus() != null){
             cardAccount.setStatus(cardAccountDto.getStatus());
         }
-        cardAccountRepository.save(cardAccount);
-        return cardAccountMapper.convertToDto(cardAccount);
     }
 }

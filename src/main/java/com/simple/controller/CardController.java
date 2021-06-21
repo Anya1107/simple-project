@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cards")
+@RequestMapping("employees/{employeeId}/cardAccounts/{cardAccId}/cards")
 @RequiredArgsConstructor
 public class CardController {
 
     private final CardService cardService;
 
-    @PostMapping(path = "/cardAccounts/{id}")
-    public CardDto add(@PathVariable long id, @RequestBody CardDto cardDto){
-        return cardService.add(id, cardDto);
+    @PostMapping
+    public CardDto add(@PathVariable long cardAccId, @RequestBody CardDto cardDto){
+        return cardService.add(cardAccId, cardDto);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -37,8 +37,8 @@ public class CardController {
     }
 
     @GetMapping
-    public List<CardDto> findAll(){
-        return cardService.findAll();
+    public List<CardDto> findAllByCardAccId(@PathVariable long cardAccId){
+        return cardService.findAllByCardAccountId(cardAccId);
     }
 
     @PutMapping(path = "/{id}")
