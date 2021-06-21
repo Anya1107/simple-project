@@ -1,7 +1,7 @@
 package com.simple.controller;
 
-import com.simple.dto.EmployeeDto;
-import com.simple.service.EmployeeService;
+import com.simple.dto.CardDto;
+import com.simple.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,34 +15,34 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("/cards")
 @RequiredArgsConstructor
-public class EmployeeController {
+public class CardController {
 
-    private final EmployeeService employeeService;
+    private final CardService cardService;
 
     @PostMapping
-    public EmployeeDto add(@RequestBody EmployeeDto employeeDto){
-        return employeeService.add(employeeDto);
+    public CardDto add(@RequestBody CardDto cardDto){
+        return cardService.add(cardDto);
     }
 
     @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable long id){
-        employeeService.delete(id);
+        cardService.delete(id);
     }
 
     @GetMapping(path = "/{id}")
-    public EmployeeDto findById(@PathVariable long id) {
-        return employeeService.findById(id);
+    public CardDto findById(@PathVariable long id){
+        return cardService.findById(id);
     }
 
     @GetMapping
-    public List<EmployeeDto> findAll() {
-        return employeeService.findAll();
+    public List<CardDto> findAll(){
+        return cardService.findAll();
     }
 
-    @PutMapping(path = "/{id}")
-    public EmployeeDto update(@PathVariable long id, @RequestBody EmployeeDto employeeDto){
-        return employeeService.update(id, employeeDto);
+    @PutMapping(path = "{id}")
+    public CardDto update(@PathVariable long id, @RequestBody CardDto cardDto){
+        return cardService.update(id, cardDto);
     }
 }

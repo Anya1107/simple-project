@@ -2,12 +2,14 @@ package com.simple.mapper;
 
 import com.simple.dto.EmployeeDto;
 import com.simple.entity.Employee;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@NoArgsConstructor
 public class EmployeeMapper {
 
     public EmployeeDto convertToDto(Employee employee){
