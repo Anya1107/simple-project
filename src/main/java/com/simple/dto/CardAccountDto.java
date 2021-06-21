@@ -7,18 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmployeeDto {
-    private String firstName;
-    private String lastName;
-    private String patronymic;
-    private String idNumber;
-    private Date birthDate;
+public class CardAccountDto {
+    private String bill_number;
+    private String currency;
     private Status status;
 }

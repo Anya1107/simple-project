@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10
+      author: anya
+      changes:
+        - dropColumn:
+            columnName: id
+            columns:
+              - column:
+                  name: employee_id
+            tableName: cards

@@ -25,8 +25,8 @@ import java.util.List;
 @Table(name = "employees")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Employee {
     @Id

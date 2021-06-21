@@ -1,5 +1,7 @@
 package com.simple.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,13 +20,17 @@ import javax.persistence.Table;
 @Table(name = "cards")
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String logicStatus;
+
+    private String number;
 
     private String cardFirstName;
 
