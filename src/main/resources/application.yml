@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/simple-project
+    username: postgres
+    password: root
+  jpa:
+    show-sql: true
+
+logic-status:
+  logic-statuses:
+    100: Запрос на изготовление отправлен
+    200: Изготовлена
+    300: Отправлена в отделение
+    400: Находится в отделении банка
+    430: Выдана клиенту
+  default-message: Статус карты неизвестен
+
