@@ -14,7 +14,7 @@ import lombok.Setter;
 @Builder
 public class CardAccountCreateResponse {
     private long id;
-    private String bill_number;
+    private String billNumber;
     private String currency;
     private Status status;
 }

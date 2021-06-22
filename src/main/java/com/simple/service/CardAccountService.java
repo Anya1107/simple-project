@@ -58,8 +58,8 @@ public class CardAccountService {
     }
 
     private void updateCardAccountFromRequestDto(CardAccount cardAccount, CardAccountUpdateRequest cardAccountUpdateRequest) {
-        if(cardAccountUpdateRequest.getBill_number() != null){
-            cardAccount.setBill_number(cardAccountUpdateRequest.getBill_number());
+        if(cardAccountUpdateRequest.getBillNumber() != null){
+            cardAccount.setBillNumber(cardAccountUpdateRequest.getBillNumber());
         }
         if(cardAccountUpdateRequest.getCurrency() != null){
             cardAccount.setCurrency(cardAccountUpdateRequest.getCurrency());

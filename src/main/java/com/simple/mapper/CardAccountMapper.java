@@ -19,7 +19,7 @@ public class CardAccountMapper {
 
     public CardAccount mapCreateCardAccountToCardAccount(CardAccountCreateRequest cardAccountCreateRequest){
         return CardAccount.builder()
-                .bill_number(cardAccountCreateRequest.getBill_number())
+                .billNumber(cardAccountCreateRequest.getBillNumber())
                 .currency(cardAccountCreateRequest.getCurrency())
                 .status(cardAccountCreateRequest.getStatus())
                 .build();
@@ -28,7 +28,7 @@ public class CardAccountMapper {
     public CardAccountCreateResponse mapCardAccountToCreateCardAccountResponse(CardAccount cardAccount){
         return CardAccountCreateResponse.builder()
                 .id(cardAccount.getId())
-                .bill_number(cardAccount.getBill_number())
+                .billNumber(cardAccount.getBillNumber())
                 .currency(cardAccount.getCurrency())
                 .status(cardAccount.getStatus())
                 .build();
@@ -36,7 +36,7 @@ public class CardAccountMapper {
 
     public CardAccount mapUpdateCardAccountRequestToCardAccount(CardAccountUpdateRequest cardAccountUpdateRequest){
         return CardAccount.builder()
-                .bill_number(cardAccountUpdateRequest.getBill_number())
+                .billNumber(cardAccountUpdateRequest.getBillNumber())
                 .currency(cardAccountUpdateRequest.getCurrency())
                 .status(cardAccountUpdateRequest.getStatus())
                 .build();
@@ -45,7 +45,7 @@ public class CardAccountMapper {
     public CardAccountUpdateResponse mapCardAccountToUpdateCardAccountResponse(CardAccount cardAccount){
         return CardAccountUpdateResponse.builder()
                 .id(cardAccount.getId())
-                .bill_number(cardAccount.getBill_number())
+                .billNumber(cardAccount.getBillNumber())
                 .currency(cardAccount.getCurrency())
                 .status(cardAccount.getStatus())
                 .build();
@@ -54,7 +54,7 @@ public class CardAccountMapper {
     public CardAccountGetResponse mapCardAccountToGetCardAccountResponse(CardAccount cardAccount){
         return CardAccountGetResponse.builder()
                 .id(cardAccount.getId())
-                .bill_number(cardAccount.getBill_number())
+                .billNumber(cardAccount.getBillNumber())
                 .currency(cardAccount.getCurrency())
                 .status(cardAccount.getStatus())
                 .build();

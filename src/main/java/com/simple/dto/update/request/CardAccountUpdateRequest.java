@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class CardAccountUpdateRequest {
-    private String bill_number;
+    private String billNumber;
     private String currency;
     private Status status;
 }
