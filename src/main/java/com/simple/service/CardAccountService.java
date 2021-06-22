@@ -29,7 +29,7 @@ public class CardAccountService {
         CardAccount cardAccount = cardAccountMapper.mapCreateCardAccountToCardAccount(cardAccountCreateRequest);
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(NullPointerException::new);
         cardAccount.setEmployee(employee);
-        cardAccountRepository.save(cardAccount);
+        cardAccount = cardAccountRepository.save(cardAccount);
         return cardAccountMapper.mapCardAccountToCreateCardAccountResponse(cardAccount);
     }
 

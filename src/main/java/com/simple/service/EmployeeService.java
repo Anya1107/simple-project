@@ -24,7 +24,7 @@ public class EmployeeService {
     @Transactional
     public EmployeeCreateResponse add(EmployeeCreateRequest employeeCreateRequest){
         Employee employee = employeeMapper.mapCreateEmployeeRequestToEmployee(employeeCreateRequest);
-        employeeRepository.save(employee);
+        employee = employeeRepository.save(employee);
         return employeeMapper.mapEmployeeToCreateEmployeeResponse(employee);
     }
 

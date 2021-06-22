@@ -31,9 +31,7 @@ public class CardService {
         CardAccount cardAccount = cardAccountRepository.findById(cardAccountId).orElseThrow(NullPointerException::new);
         Card card = cardMapper.mapCreateCardRequestToCard(cardCreateRequest);
         card.setCardAccount(cardAccount);
-        cardRepository.save(card);
-//        card.setLogicStatus(logicStatusMapper.convertStatusField(cardCreateRequest.getLogicStatus()));
-
+        card = cardRepository.save(card);
         CardCreateResponse cardCreateResponse = cardMapper.mapCardToCreateCardResponse(card);
         cardCreateResponse.setLogicStatus(logicStatusMapper.convertStatusField(card.getLogicStatus()));
         return cardCreateResponse;
