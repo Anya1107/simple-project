@@ -1,4 +1,4 @@
-package com.simple.dto;
+package com.simple.dto.update.request;
 
 import com.simple.entity.Status;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CardAccountDto {
+public class CardAccountUpdateRequest {
     private String bill_number;
     private String currency;
     private Status status;

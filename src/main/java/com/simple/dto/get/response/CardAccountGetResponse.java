@@ -1,4 +1,4 @@
-package com.simple.dto;
+package com.simple.dto.get.response;
 
 import com.simple.entity.Status;
 import lombok.AllArgsConstructor;
@@ -7,18 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class EmployeeDto {
-    private String firstName;
-    private String lastName;
-    private String patronymic;
-    private String idNumber;
-    private Date birthDate;
+public class CardAccountGetResponse {
+    private long id;
+    private String bill_number;
+    private String currency;
     private Status status;
 }

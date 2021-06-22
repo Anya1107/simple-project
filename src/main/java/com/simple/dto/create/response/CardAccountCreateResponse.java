@@ -1,4 +1,4 @@
-package com.simple.dto.create.request;
+package com.simple.dto.create.response;
 
 import com.simple.entity.Status;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CardAccountCreateRequest {
+public class CardAccountCreateResponse {
+    private long id;
     private String bill_number;
     private String currency;
     private Status status;

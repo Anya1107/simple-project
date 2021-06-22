@@ -1,8 +1,11 @@
 package com.simple.mapper;
 
-import com.simple.dto.CardDto;
+import com.simple.dto.create.request.CardCreateRequest;
+import com.simple.dto.create.response.CardCreateResponse;
+import com.simple.dto.get.response.CardGetResponse;
+import com.simple.dto.update.request.CardUpdateRequest;
+import com.simple.dto.update.response.CardUpdateResponse;
 import com.simple.entity.Card;
-import com.simple.entity.CardAccount;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +16,18 @@ import java.util.List;
 @NoArgsConstructor
 public class CardMapper {
 
-    public CardDto convertToDto(Card card){
-        return CardDto.builder()
+    public Card mapCreateCardRequestToCard(CardCreateRequest cardCreateRequest){
+        return Card.builder()
+                .logicStatus(cardCreateRequest.getLogicStatus())
+                .number(cardCreateRequest.getNumber())
+                .cardFirstName(cardCreateRequest.getCardFirstName())
+                .cardLastName(cardCreateRequest.getCardLastName())
+                .build();
+    }
+
+    public CardCreateResponse mapCardToCreateCardResponse(Card card){
+        return CardCreateResponse.builder()
+                .id(card.getId())
                 .logicStatus(card.getLogicStatus())
                 .number(card.getNumber())
                 .cardFirstName(card.getCardFirstName())
@@ -22,19 +35,39 @@ public class CardMapper {
                 .build();
     }
 
-    public Card convertFromDto(CardDto cardDto){
+    public Card mapUpdateCardRequestToCard(CardUpdateRequest cardUpdateRequest){
         return Card.builder()
-                .logicStatus(cardDto.getLogicStatus())
-                .number(cardDto.getNumber())
-                .cardFirstName(cardDto.getCardFirstName())
-                .cardLastName(cardDto.getCardLastName())
+                .logicStatus(cardUpdateRequest.getLogicStatus())
+                .number(cardUpdateRequest.getNumber())
+                .cardFirstName(cardUpdateRequest.getCardFirstName())
+                .cardLastName(cardUpdateRequest.getCardLastName())
                 .build();
     }
 
-    public List<CardDto> convertListToDto(List<Card> cards){
-        List<CardDto> cardDtos = new ArrayList<>();
+    public CardUpdateResponse mapCardToUpdateCardResponse(Card card){
+        return CardUpdateResponse.builder()
+                .id(card.getId())
+                .logicStatus(card.getLogicStatus())
+                .number(card.getNumber())
+                .cardFirstName(card.getCardFirstName())
+                .cardLastName(card.getCardLastName())
+                .build();
+    }
+
+    public CardGetResponse mapCardToGetCardResponse(Card card){
+        return CardGetResponse.builder()
+                .id(card.getId())
+                .logicStatus(card.getLogicStatus())
+                .number(card.getNumber())
+                .cardFirstName(card.getCardFirstName())
+                .cardLastName(card.getCardLastName())
+                .build();
+    }
+
+    public List<CardGetResponse> mapCardListToGetCardResponseList(List<Card> cards){
+        List<CardGetResponse> cardDtos = new ArrayList<>();
         for (Card card : cards) {
-            CardDto cardDto = convertToDto(card);
+            CardGetResponse cardDto = mapCardToGetCardResponse(card);
             cardDtos.add(cardDto);
         }
         return cardDtos;

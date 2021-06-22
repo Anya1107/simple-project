@@ -1,6 +1,10 @@
 package com.simple.controller;
 
-import com.simple.dto.EmployeeDto;
+import com.simple.dto.create.request.EmployeeCreateRequest;
+import com.simple.dto.create.response.EmployeeCreateResponse;
+import com.simple.dto.get.response.EmployeeGetResponse;
+import com.simple.dto.update.request.EmployeeUpdateRequest;
+import com.simple.dto.update.response.EmployeeUpdateResponse;
 import com.simple.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +26,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping
-    public EmployeeDto add(@RequestBody EmployeeDto employeeDto){
+    public EmployeeCreateResponse add(@RequestBody EmployeeCreateRequest employeeDto){
         return employeeService.add(employeeDto);
     }
 
@@ -32,17 +36,17 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/{id}")
-    public EmployeeDto findById(@PathVariable long id) {
+    public EmployeeGetResponse findById(@PathVariable long id) {
         return employeeService.findById(id);
     }
 
     @GetMapping
-    public List<EmployeeDto> findAll() {
+    public List<EmployeeGetResponse> findAll() {
         return employeeService.findAll();
     }
 
     @PutMapping(path = "/{id}")
-    public EmployeeDto update(@PathVariable long id, @RequestBody EmployeeDto employeeDto){
-        return employeeService.update(id, employeeDto);
+    public EmployeeUpdateResponse update(@PathVariable long id, @RequestBody EmployeeUpdateRequest employeeUpdateRequest){
+        return employeeService.update(id, employeeUpdateRequest);
     }
 }

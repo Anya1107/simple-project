@@ -37,6 +37,6 @@ public class Card {
     private String cardLastName;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "card_account_id")
     private CardAccount cardAccount;
 }

@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 12
+      author: anya
+      changes:
+        - renameColumn:
+            columnDataType: biging
+            newColumnName: card_account_id
+            oldColumnName: employee_id
+            tableName: cards

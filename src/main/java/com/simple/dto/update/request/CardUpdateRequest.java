@@ -1,6 +1,5 @@
-package com.simple.dto.create.request;
+package com.simple.dto.update.request;
 
-import com.simple.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,8 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CardAccountCreateRequest {
-    private String bill_number;
-    private String currency;
-    private Status status;
+public class CardUpdateRequest {
+    private String logicStatus;
+    private String number;
+    private String cardFirstName;
+    private String cardLastName;
 }

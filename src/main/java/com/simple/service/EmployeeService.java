@@ -1,6 +1,10 @@
 package com.simple.service;
 
-import com.simple.dto.EmployeeDto;
+import com.simple.dto.create.request.EmployeeCreateRequest;
+import com.simple.dto.create.response.EmployeeCreateResponse;
+import com.simple.dto.get.response.EmployeeGetResponse;
+import com.simple.dto.update.request.EmployeeUpdateRequest;
+import com.simple.dto.update.response.EmployeeUpdateResponse;
 import com.simple.entity.Employee;
 import com.simple.mapper.EmployeeMapper;
 import com.simple.repository.EmployeeRepository;
@@ -18,47 +22,53 @@ public class EmployeeService {
     private final EmployeeMapper employeeMapper;
 
     @Transactional
-    public EmployeeDto add(EmployeeDto employeeDto){
-        employeeRepository.save(employeeMapper.convertFromDto(employeeDto));
-        return employeeDto;
+    public EmployeeCreateResponse add(EmployeeCreateRequest employeeCreateRequest){
+        Employee employee = employeeMapper.mapCreateEmployeeRequestToEmployee(employeeCreateRequest);
+        employeeRepository.save(employee);
+        return employeeMapper.mapEmployeeToCreateEmployeeResponse(employee);
     }
 
+    @Transactional
     public void delete(long id){
         Employee employee = employeeRepository.findById(id).orElseThrow(NullPointerException::new);
         employeeRepository.delete(employee);
     }
 
-    public EmployeeDto findById(long id) {
+    public EmployeeGetResponse findById(long id) {
         Employee employee = employeeRepository.findById(id).orElseThrow(NullPointerException::new);
-        return employeeMapper.convertToDto(employee);
+        return employeeMapper.mapEmployeeToGetEmployeeResponse(employee);
     }
 
-    public List<EmployeeDto> findAll() {
+    public List<EmployeeGetResponse> findAll() {
         List<Employee> employees = employeeRepository.findAll();
-        return employeeMapper.convertListToDto(employees);
+        return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
     }
 
-    public EmployeeDto update(long id, EmployeeDto employeeDto){
+    public EmployeeUpdateResponse update(long id, EmployeeUpdateRequest employeeUpdateRequest){
         Employee employee = employeeRepository.findById(id).orElseThrow(NullPointerException::new);
-        if(employeeDto.getFirstName() != null){
-            employee.setFirstName(employeeDto.getFirstName());
-        }
-        if(employeeDto.getLastName() != null){
-            employee.setLastName(employeeDto.getLastName());
-        }
-        if(employeeDto.getPatronymic() != null){
-            employee.setPatronymic(employeeDto.getPatronymic());
-        }
-        if(employeeDto.getIdNumber() != null){
-            employee.setIdNumber(employeeDto.getIdNumber());
-        }
-        if(employeeDto.getBirthDate() != null){
-            employee.setBirthDate(employeeDto.getBirthDate());
-        }
-        if(employeeDto.getStatus() != null){
-            employee.setStatus(employeeDto.getStatus());
-        }
+        updateEmployeeFromRequestDto(employeeUpdateRequest, employee);
         employee = employeeRepository.save(employee);
-        return employeeMapper.convertToDto(employee);
+        return employeeMapper.mapEmployeeToUpdateEmployeeResponse(employee);
+    }
+
+    private void updateEmployeeFromRequestDto(EmployeeUpdateRequest employeeUpdateRequest, Employee employee) {
+        if(employeeUpdateRequest.getFirstName() != null){
+            employee.setFirstName(employeeUpdateRequest.getFirstName());
+        }
+        if(employeeUpdateRequest.getLastName() != null){
+            employee.setLastName(employeeUpdateRequest.getLastName());
+        }
+        if(employeeUpdateRequest.getPatronymic() != null){
+            employee.setPatronymic(employeeUpdateRequest.getPatronymic());
+        }
+        if(employeeUpdateRequest.getIdNumber() != null){
+            employee.setIdNumber(employeeUpdateRequest.getIdNumber());
+        }
+        if(employeeUpdateRequest.getBirthDate() != null){
+            employee.setBirthDate(employeeUpdateRequest.getBirthDate());
+        }
+        if(employeeUpdateRequest.getStatus() != null){
+            employee.setStatus(employeeUpdateRequest.getStatus());
+        }
     }
 }

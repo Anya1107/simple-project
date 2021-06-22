@@ -1,6 +1,10 @@
 package com.simple.service;
 
-import com.simple.dto.CardAccountDto;
+import com.simple.dto.create.request.CardAccountCreateRequest;
+import com.simple.dto.create.response.CardAccountCreateResponse;
+import com.simple.dto.get.response.CardAccountGetResponse;
+import com.simple.dto.update.request.CardAccountUpdateRequest;
+import com.simple.dto.update.response.CardAccountUpdateResponse;
 import com.simple.entity.CardAccount;
 import com.simple.entity.Employee;
 import com.simple.mapper.CardAccountMapper;
@@ -21,46 +25,47 @@ public class CardAccountService {
     private final CardAccountMapper cardAccountMapper;
 
     @Transactional
-    public CardAccountDto add(long employeeId, CardAccountDto cardAccountDto){
-        CardAccount cardAccount = cardAccountMapper.convertFromDto(cardAccountDto);
+    public CardAccountCreateResponse add(long employeeId, CardAccountCreateRequest cardAccountCreateRequest){
+        CardAccount cardAccount = cardAccountMapper.mapCreateCardAccountToCardAccount(cardAccountCreateRequest);
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(NullPointerException::new);
         cardAccount.setEmployee(employee);
         cardAccountRepository.save(cardAccount);
-        return cardAccountDto;
+        return cardAccountMapper.mapCardAccountToCreateCardAccountResponse(cardAccount);
     }
 
+    @Transactional
     public void delete(long id){
         CardAccount cardAccount = cardAccountRepository.findById(id).orElseThrow(NullPointerException::new);
         cardAccountRepository.delete(cardAccount);
     }
 
-    public CardAccountDto findById(long id){
+    public CardAccountGetResponse findById(long id){
         CardAccount cardAccount = cardAccountRepository.findById(id).orElseThrow(NullPointerException::new);
-        return cardAccountMapper.convertToDto(cardAccount);
+        return cardAccountMapper.mapCardAccountToGetCardAccountResponse(cardAccount);
     }
 
-    public List<CardAccountDto> findAllByEmployee(long employeeId){
+    public List<CardAccountGetResponse> findAllByEmployee(long employeeId){
         Employee employee = employeeRepository.findById(employeeId).orElseThrow(NullPointerException::new);
         List<CardAccount> cardAccounts = cardAccountRepository.findAllByEmployee(employee);
-        return cardAccountMapper.convertListToDto(cardAccounts);
+        return cardAccountMapper.mapCardListToGetCardResponseList(cardAccounts);
     }
 
-    public CardAccountDto update(long id, CardAccountDto cardAccountDto){
+    public CardAccountUpdateResponse update(long id, CardAccountUpdateRequest cardAccountUpdateRequest){
         CardAccount cardAccount = cardAccountRepository.findById(id).orElseThrow(NullPointerException::new);
-        updateCardAccountFromRequestDto(cardAccount, cardAccountDto);
+        updateCardAccountFromRequestDto(cardAccount, cardAccountUpdateRequest);
         cardAccount = cardAccountRepository.save(cardAccount);
-        return cardAccountMapper.convertToDto(cardAccount);
+        return cardAccountMapper.mapCardAccountToUpdateCardAccountResponse(cardAccount);
     }
 
-    private void updateCardAccountFromRequestDto(CardAccount cardAccount, CardAccountDto cardAccountDto) {
-        if(cardAccountDto.getBill_number() != null){
-            cardAccount.setBill_number(cardAccountDto.getBill_number());
+    private void updateCardAccountFromRequestDto(CardAccount cardAccount, CardAccountUpdateRequest cardAccountUpdateRequest) {
+        if(cardAccountUpdateRequest.getBill_number() != null){
+            cardAccount.setBill_number(cardAccountUpdateRequest.getBill_number());
         }
-        if(cardAccountDto.getCurrency() != null){
-            cardAccount.setCurrency(cardAccountDto.getCurrency());
+        if(cardAccountUpdateRequest.getCurrency() != null){
+            cardAccount.setCurrency(cardAccountUpdateRequest.getCurrency());
         }
-        if(cardAccountDto.getStatus() != null){
-            cardAccount.setStatus(cardAccountDto.getStatus());
+        if(cardAccountUpdateRequest.getStatus() != null){
+            cardAccount.setStatus(cardAccountUpdateRequest.getStatus());
         }
     }
 }
