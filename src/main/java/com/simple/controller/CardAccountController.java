@@ -1,6 +1,12 @@
 package com.simple.controller;
 
-import com.simple.dto.CardAccountDto;
+import com.simple.dto.create.request.CardAccountCreateRequest;
+import com.simple.dto.create.response.CardAccountCreateResponse;
+import com.simple.dto.get.response.CardAccountGetResponse;
+import com.simple.dto.get.response.CardGetResponse;
+import com.simple.dto.update.request.CardAccountUpdateRequest;
+import com.simple.dto.update.request.CardUpdateRequest;
+import com.simple.dto.update.response.CardAccountUpdateResponse;
 import com.simple.service.CardAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,8 +28,8 @@ public class CardAccountController {
     private final CardAccountService cardAccountService;
 
     @PostMapping
-    public CardAccountDto add(@PathVariable long employeeId, @RequestBody CardAccountDto cardAccountDto){
-        return cardAccountService.add(employeeId, cardAccountDto);
+    public CardAccountCreateResponse add(@PathVariable long employeeId, @RequestBody CardAccountCreateRequest cardAccountCreateRequest){
+        return cardAccountService.add(employeeId, cardAccountCreateRequest);
     }
 
     @DeleteMapping("/{id}")
@@ -32,17 +38,17 @@ public class CardAccountController {
     }
 
     @GetMapping(path = "/{id}")
-    public CardAccountDto findById(@PathVariable long id){
+    public CardAccountGetResponse findById(@PathVariable long id){
         return cardAccountService.findById(id);
     }
 
     @GetMapping
-    public List<CardAccountDto> findAllByEmployeeId(@PathVariable long employeeId){
+    public List<CardAccountGetResponse> findAllByEmployeeId(@PathVariable long employeeId){
         return cardAccountService.findAllByEmployee(employeeId);
     }
 
     @PutMapping(path = "/{id}")
-    public CardAccountDto update(@PathVariable long id, @RequestBody CardAccountDto cardAccountDto){
-        return cardAccountService.update(id, cardAccountDto);
+    public CardAccountUpdateResponse update(@PathVariable long id, @RequestBody CardAccountUpdateRequest cardAccountUpdateRequest){
+        return cardAccountService.update(id, cardAccountUpdateRequest);
     }
 }

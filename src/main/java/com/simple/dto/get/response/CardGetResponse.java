@@ -1,4 +1,4 @@
-package com.simple.dto;
+package com.simple.dto.get.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CardDto {
+public class CardGetResponse {
+    private long id;
     private String logicStatus;
     private String number;
     private String cardFirstName;

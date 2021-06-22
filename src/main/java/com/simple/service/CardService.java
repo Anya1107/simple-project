@@ -1,6 +1,10 @@
 package com.simple.service;
 
-import com.simple.dto.CardDto;
+import com.simple.dto.create.request.CardCreateRequest;
+import com.simple.dto.create.response.CardCreateResponse;
+import com.simple.dto.get.response.CardGetResponse;
+import com.simple.dto.update.request.CardUpdateRequest;
+import com.simple.dto.update.response.CardUpdateResponse;
 import com.simple.entity.Card;
 import com.simple.entity.CardAccount;
 import com.simple.mapper.CardMapper;
@@ -23,41 +27,49 @@ public class CardService {
     private final LogicStatusMapper logicStatusMapper;
 
     @Transactional
-    public CardDto add(long cardAccountId, CardDto cardDto){
+    public CardCreateResponse add(long cardAccountId, CardCreateRequest cardCreateRequest){
         CardAccount cardAccount = cardAccountRepository.findById(cardAccountId).orElseThrow(NullPointerException::new);
-        Card card = cardMapper.convertFromDto(cardDto);
+        Card card = cardMapper.mapCreateCardRequestToCard(cardCreateRequest);
         card.setCardAccount(cardAccount);
-        cardRepository.save(card);
-        return logicStatusMapper.convertLogicStatus(cardMapper.convertToDto(card));
+        card = cardRepository.save(card);
+        CardCreateResponse cardCreateResponse = cardMapper.mapCardToCreateCardResponse(card);
+        cardCreateResponse.setLogicStatus(logicStatusMapper.convertStatusField(card.getLogicStatus()));
+        return cardCreateResponse;
     }
 
+    @Transactional
     public void delete(long id){
         Card card = cardRepository.findById(id).orElseThrow(NullPointerException::new);
         cardRepository.delete(card);
     }
 
-    public CardDto findById(long id){
+    public CardGetResponse findById(long id){
         Card card = cardRepository.findById(id).orElseThrow(NullPointerException::new);
-        return logicStatusMapper.convertLogicStatus(cardMapper.convertToDto(card));
+        card.setLogicStatus(logicStatusMapper.convertStatusField(card.getLogicStatus()));
+        return cardMapper.mapCardToGetCardResponse(card);
     }
 
-    public List<CardDto> findAllByCardAccountId(long cardAccId){
+    public List<CardGetResponse> findAllByCardAccountId(long cardAccId){
         List<Card> cards = cardRepository.findAllByCardAccountId(cardAccId);
-        return logicStatusMapper.convertLogicStatuses(cardMapper.convertListToDto(cards));
+        return logicStatusMapper.convertLogicStatuses(cardMapper.mapCardListToGetCardResponseList(cards));
     }
 
-    public CardDto update(long id, CardDto cardDto){
+    public CardUpdateResponse update(long id, CardUpdateRequest cardUpdateRequest){
         Card card = cardRepository.findById(id).orElseThrow(NullPointerException::new);
-        if(cardDto.getCardFirstName() != null){
-            card.setCardFirstName(cardDto.getCardFirstName());
-        }
-        if(cardDto.getCardLastName() != null){
-            card.setCardLastName(cardDto.getCardLastName());
-        }
-        if(cardDto.getLogicStatus() != null){
-            card.setLogicStatus(cardDto.getLogicStatus());
-        }
+        updateCardFromRequestDto(cardUpdateRequest, card);
         card = cardRepository.save(card);
-        return logicStatusMapper.convertLogicStatus(cardMapper.convertToDto(card));
+        return cardMapper.mapCardToUpdateCardResponse(card);
+    }
+
+    private void updateCardFromRequestDto(CardUpdateRequest cardUpdateRequest, Card card) {
+        if(cardUpdateRequest.getCardFirstName() != null){
+            card.setCardFirstName(cardUpdateRequest.getCardFirstName());
+        }
+        if(cardUpdateRequest.getCardLastName() != null){
+            card.setCardLastName(cardUpdateRequest.getCardLastName());
+        }
+        if(cardUpdateRequest.getLogicStatus() != null){
+            card.setLogicStatus(logicStatusMapper.convertStatusField(cardUpdateRequest.getLogicStatus()));
+        }
     }
 }

@@ -1,6 +1,9 @@
 package com.simple.mapper;
 
-import com.simple.dto.CardDto;
+import com.simple.dto.create.response.CardCreateResponse;
+import com.simple.dto.get.response.CardGetResponse;
+import com.simple.dto.update.request.CardUpdateRequest;
+import com.simple.dto.update.response.CardUpdateResponse;
 import com.simple.properties.LogicStatusProperties;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,23 +20,17 @@ public class LogicStatusMapper {
     @Autowired
     private LogicStatusProperties logicStatusProperties;
 
-    public CardDto convertLogicStatus(CardDto cardDto){
-        convertStatusField(cardDto);
-        return cardDto;
-    }
-
-    public List<CardDto> convertLogicStatuses(List<CardDto> cardDtos){
-        for (CardDto cardDto : cardDtos) {
-            convertStatusField(cardDto);
+    public List<CardGetResponse> convertLogicStatuses(List<CardGetResponse> cardDtos){
+        for (CardGetResponse cardDto : cardDtos) {
+            cardDto.setLogicStatus(convertStatusField(cardDto.getLogicStatus()));
         }
         return cardDtos;
     }
 
-    private void convertStatusField(CardDto cardDto) {
-        String logicStatus = cardDto.getLogicStatus();
+    public String convertStatusField(String logicStatus) {
         String defaultMessage = logicStatusProperties.getDefaultMessage();
         String status = logicStatusProperties.getLogicStatuses().get(logicStatus);
 
-        cardDto.setLogicStatus(status != null ? status : defaultMessage);
+        return status != null ? status : defaultMessage;
     }
 }

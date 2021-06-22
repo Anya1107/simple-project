@@ -31,7 +31,7 @@ public class CardAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String bill_number;
+    private String billNumber;
 
     private String currency;
 

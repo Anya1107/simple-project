@@ -1,6 +1,10 @@
 package com.simple.controller;
 
-import com.simple.dto.CardDto;
+import com.simple.dto.create.request.CardCreateRequest;
+import com.simple.dto.create.response.CardCreateResponse;
+import com.simple.dto.get.response.CardGetResponse;
+import com.simple.dto.update.request.CardUpdateRequest;
+import com.simple.dto.update.response.CardUpdateResponse;
 import com.simple.service.CardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,15 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("employees/{employeeId}/cardAccounts/{cardAccId}/cards")
+@RequestMapping("/cardAccounts/{cardAccId}/cards")
 @RequiredArgsConstructor
 public class CardController {
 
     private final CardService cardService;
 
     @PostMapping
-    public CardDto add(@PathVariable long cardAccId, @RequestBody CardDto cardDto){
-        return cardService.add(cardAccId, cardDto);
+    public CardCreateResponse add(@PathVariable long cardAccId, @RequestBody CardCreateRequest cardCreateRequest){
+        return cardService.add(cardAccId, cardCreateRequest);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -32,17 +36,17 @@ public class CardController {
     }
 
     @GetMapping(path = "/{id}")
-    public CardDto findById(@PathVariable long id){
+    public CardGetResponse findById(@PathVariable long id){
         return cardService.findById(id);
     }
 
     @GetMapping
-    public List<CardDto> findAllByCardAccId(@PathVariable long cardAccId){
+    public List<CardGetResponse> findAllByCardAccId(@PathVariable long cardAccId){
         return cardService.findAllByCardAccountId(cardAccId);
     }
 
     @PutMapping(path = "/{id}")
-    public CardDto update(@PathVariable long id, @RequestBody CardDto cardDto){
-        return cardService.update(id, cardDto);
+    public CardUpdateResponse update(@PathVariable long id, @RequestBody CardUpdateRequest cardUpdateRequest){
+        return cardService.update(id, cardUpdateRequest);
     }
 }

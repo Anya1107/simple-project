@@ -1,6 +1,11 @@
 package com.simple.mapper;
 
-import com.simple.dto.EmployeeDto;
+import com.simple.dto.create.request.EmployeeCreateRequest;
+import com.simple.dto.create.response.EmployeeCreateResponse;
+import com.simple.dto.get.response.CardGetResponse;
+import com.simple.dto.get.response.EmployeeGetResponse;
+import com.simple.dto.update.request.EmployeeUpdateRequest;
+import com.simple.dto.update.response.EmployeeUpdateResponse;
 import com.simple.entity.Employee;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,8 +17,21 @@ import java.util.List;
 @NoArgsConstructor
 public class EmployeeMapper {
 
-    public EmployeeDto convertToDto(Employee employee){
-        return EmployeeDto.builder()
+    public Employee mapCreateEmployeeRequestToEmployee(EmployeeCreateRequest employeeCreateRequest){
+        return Employee.builder()
+                .firstName(employeeCreateRequest.getFirstName())
+                .lastName(employeeCreateRequest.getLastName())
+                .patronymic(employeeCreateRequest.getPatronymic())
+                .idNumber(employeeCreateRequest.getIdNumber())
+                .birthDate(employeeCreateRequest.getBirthDate())
+                .status(employeeCreateRequest.getStatus())
+                .build();
+
+    }
+
+    public EmployeeCreateResponse mapEmployeeToCreateEmployeeResponse(Employee employee){
+        return EmployeeCreateResponse.builder()
+                .id(employee.getId())
                 .firstName(employee.getFirstName())
                 .lastName(employee.getLastName())
                 .patronymic(employee.getPatronymic())
@@ -23,24 +41,47 @@ public class EmployeeMapper {
                 .build();
     }
 
-    public Employee convertFromDto(EmployeeDto employeeDto){
+    public Employee mapUpdateEmployeeRequestToEmployee(EmployeeUpdateRequest employeeUpdateRequest){
         return Employee.builder()
-                .firstName(employeeDto.getFirstName())
-                .lastName(employeeDto.getLastName())
-                .patronymic(employeeDto.getPatronymic())
-                .idNumber(employeeDto.getIdNumber())
-                .birthDate(employeeDto.getBirthDate())
-                .status(employeeDto.getStatus())
+                .firstName(employeeUpdateRequest.getFirstName())
+                .lastName(employeeUpdateRequest.getLastName())
+                .patronymic(employeeUpdateRequest.getPatronymic())
+                .idNumber(employeeUpdateRequest.getIdNumber())
+                .birthDate(employeeUpdateRequest.getBirthDate())
+                .status(employeeUpdateRequest.getStatus())
                 .build();
-
     }
 
-    public List<EmployeeDto> convertListToDto(List<Employee> employees){
-        List<EmployeeDto> employeeDtos = new ArrayList<>();
+    public EmployeeUpdateResponse mapEmployeeToUpdateEmployeeResponse(Employee employee){
+        return EmployeeUpdateResponse.builder()
+                .id(employee.getId())
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .patronymic(employee.getPatronymic())
+                .idNumber(employee.getIdNumber())
+                .birthDate(employee.getBirthDate())
+                .status(employee.getStatus())
+                .build();
+    }
+
+    public EmployeeGetResponse mapEmployeeToGetEmployeeResponse(Employee employee){
+        return EmployeeGetResponse.builder()
+                .id(employee.getId())
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .patronymic(employee.getPatronymic())
+                .idNumber(employee.getIdNumber())
+                .birthDate(employee.getBirthDate())
+                .status(employee.getStatus())
+                .build();
+    }
+
+    public List<EmployeeGetResponse> mapEmployeeListToGetEmployeeResponseList(List<Employee> employees){
+        List<EmployeeGetResponse> employeeGetResponses = new ArrayList<>();
         for (Employee employee : employees) {
-            EmployeeDto employeeDto = convertToDto(employee);
-            employeeDtos.add(employeeDto);
+            EmployeeGetResponse employeeGetResponse = mapEmployeeToGetEmployeeResponse(employee);
+            employeeGetResponses.add(employeeGetResponse);
         }
-        return employeeDtos;
+        return employeeGetResponses;
     }
 }
