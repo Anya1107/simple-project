@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -40,13 +41,13 @@ public class EmployeeController {
         return employeeService.findById(id);
     }
 
-    @GetMapping
-    public List<EmployeeGetResponse> findAll() {
-        return employeeService.findAll();
-    }
-
     @PutMapping(path = "/{id}")
     public EmployeeUpdateResponse update(@PathVariable long id, @RequestBody EmployeeUpdateRequest employeeUpdateRequest){
         return employeeService.update(id, employeeUpdateRequest);
+    }
+
+    @GetMapping
+    public List<EmployeeGetResponse> findBAllOrByFilter(@RequestParam(required = false) String idNumber){
+        return employeeService.find(idNumber);
     }
 }
