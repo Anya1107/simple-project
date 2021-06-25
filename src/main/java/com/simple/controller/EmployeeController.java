@@ -48,6 +48,6 @@ public class EmployeeController {
 
     @GetMapping
     public List<EmployeeGetResponse> findBAllOrByFilter(@RequestParam(required = false) String idNumber){
-        return employeeService.findByFilter(idNumber);
+        return employeeService.find(idNumber);
     }
 }

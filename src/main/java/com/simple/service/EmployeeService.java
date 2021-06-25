@@ -7,12 +7,19 @@ import com.simple.dto.update.request.EmployeeUpdateRequest;
 import com.simple.dto.update.response.EmployeeUpdateResponse;
 import com.simple.entity.Employee;
 import com.simple.mapper.EmployeeMapper;
-import com.simple.repository.CustomizedEmployeeRepositoryImpl;
 import com.simple.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +28,9 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
-    private final CustomizedEmployeeRepositoryImpl customizedEmployeeRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Transactional
     public EmployeeCreateResponse add(EmployeeCreateRequest employeeCreateRequest){
@@ -53,11 +62,25 @@ public class EmployeeService {
         return employeeMapper.mapEmployeeToUpdateEmployeeResponse(employee);
     }
 
-    public List<EmployeeGetResponse> findByFilter(String idNumber){
+    public List<EmployeeGetResponse> find(String idNumber) {
         if(idNumber == null){
             return findAll();
         }
-        List<Employee> employees = customizedEmployeeRepository.findByFilter(idNumber);
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Employee> query = cb.createQuery(Employee.class);
+        Root<Employee> employee = query.from(Employee.class);
+
+        Path<String> idNumPath = employee.get("idNumber");
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        predicates.add(cb.like(idNumPath, "%" + idNumber + "%"));
+
+        query.select(employee)
+                .where(cb.or(predicates.toArray(new Predicate[predicates.size()])));
+
+        List<Employee> employees = entityManager.createQuery(query).getResultList();
         return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
     }
 
