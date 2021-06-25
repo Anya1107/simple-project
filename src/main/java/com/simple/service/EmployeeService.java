@@ -6,13 +6,16 @@ import com.simple.dto.get.response.EmployeeGetResponse;
 import com.simple.dto.update.request.EmployeeUpdateRequest;
 import com.simple.dto.update.response.EmployeeUpdateResponse;
 import com.simple.entity.Employee;
+import com.simple.entity.Status;
 import com.simple.mapper.EmployeeMapper;
 import com.simple.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +52,11 @@ public class EmployeeService {
         updateEmployeeFromRequestDto(employeeUpdateRequest, employee);
         employee = employeeRepository.save(employee);
         return employeeMapper.mapEmployeeToUpdateEmployeeResponse(employee);
+    }
+
+    public List<EmployeeGetResponse> findByFilter(String idNumber){
+        List<Employee> byFilter = employeeRepository.findByFilter(idNumber);
+        return employeeMapper.mapEmployeeListToGetEmployeeResponseList(byFilter);
     }
 
     private void updateEmployeeFromRequestDto(EmployeeUpdateRequest employeeUpdateRequest, Employee employee) {
