@@ -10,6 +10,7 @@ import com.simple.mapper.EmployeeMapper;
 import com.simple.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +51,8 @@ public class EmployeeService {
         return employeeMapper.mapEmployeeToGetEmployeeResponse(employee);
     }
 
-    public List<EmployeeGetResponse> findAll() {
-        List<Employee> employees = employeeRepository.findAll();
+    public List<EmployeeGetResponse> findAll(Pageable pageable) {
+        List<Employee> employees = employeeRepository.findAll(pageable).toList();
         return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
     }
 
@@ -62,11 +63,23 @@ public class EmployeeService {
         return employeeMapper.mapEmployeeToUpdateEmployeeResponse(employee);
     }
 
-    public List<EmployeeGetResponse> find(String idNumber) {
+    public List<EmployeeGetResponse> find(String idNumber, Pageable pageable, Integer page, Integer size) {
         if(idNumber == null){
-            return findAll();
+            return findAll(pageable);
         }
 
+        CriteriaQuery<Employee> query = getEmployeeCriteriaQuery(idNumber);
+
+        List<Employee> employees = entityManager.createQuery(query).getResultList();
+
+        if(page == null && size == null){
+            return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
+        } else {
+            return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees).subList(page, size);
+        }
+    }
+
+    private CriteriaQuery<Employee> getEmployeeCriteriaQuery(String idNumber) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> query = cb.createQuery(Employee.class);
         Root<Employee> employee = query.from(Employee.class);
@@ -79,9 +92,7 @@ public class EmployeeService {
 
         query.select(employee)
                 .where(cb.or(predicates.toArray(new Predicate[predicates.size()])));
-
-        List<Employee> employees = entityManager.createQuery(query).getResultList();
-        return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
+        return query;
     }
 
     private void updateEmployeeFromRequestDto(EmployeeUpdateRequest employeeUpdateRequest, Employee employee) {
