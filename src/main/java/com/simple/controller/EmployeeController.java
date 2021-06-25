@@ -5,8 +5,6 @@ import com.simple.dto.create.response.EmployeeCreateResponse;
 import com.simple.dto.get.response.EmployeeGetResponse;
 import com.simple.dto.update.request.EmployeeUpdateRequest;
 import com.simple.dto.update.response.EmployeeUpdateResponse;
-import com.simple.entity.Employee;
-import com.simple.entity.Status;
 import com.simple.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/employees")
@@ -45,18 +41,13 @@ public class EmployeeController {
         return employeeService.findById(id);
     }
 
-    @GetMapping
-    public List<EmployeeGetResponse> findAll() {
-        return employeeService.findAll();
-    }
-
     @PutMapping(path = "/{id}")
     public EmployeeUpdateResponse update(@PathVariable long id, @RequestBody EmployeeUpdateRequest employeeUpdateRequest){
         return employeeService.update(id, employeeUpdateRequest);
     }
 
-    @GetMapping("/byFilter")
-    public List<EmployeeGetResponse> findByFilter(@RequestParam String idNumber){
+    @GetMapping
+    public List<EmployeeGetResponse> findBAllOrByFilter(@RequestParam(required = false) String idNumber){
         return employeeService.findByFilter(idNumber);
     }
 }

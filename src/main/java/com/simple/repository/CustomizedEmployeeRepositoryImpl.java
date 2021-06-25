@@ -2,6 +2,7 @@ package com.simple.repository;
 
 import com.simple.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,12 +13,12 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomizedEmployeeRepositoryImpl implements CustomizedEmployeeRepository {
+@Repository
+public class CustomizedEmployeeRepositoryImpl{
 
     @Autowired
     EntityManager entityManager;
 
-    @Override
     public List<Employee> findByFilter(String idNumber) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Employee> query = cb.createQuery(Employee.class);

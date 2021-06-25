@@ -6,16 +6,14 @@ import com.simple.dto.get.response.EmployeeGetResponse;
 import com.simple.dto.update.request.EmployeeUpdateRequest;
 import com.simple.dto.update.response.EmployeeUpdateResponse;
 import com.simple.entity.Employee;
-import com.simple.entity.Status;
 import com.simple.mapper.EmployeeMapper;
+import com.simple.repository.CustomizedEmployeeRepositoryImpl;
 import com.simple.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +21,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final CustomizedEmployeeRepositoryImpl customizedEmployeeRepository;
 
     @Transactional
     public EmployeeCreateResponse add(EmployeeCreateRequest employeeCreateRequest){
@@ -55,8 +54,11 @@ public class EmployeeService {
     }
 
     public List<EmployeeGetResponse> findByFilter(String idNumber){
-        List<Employee> byFilter = employeeRepository.findByFilter(idNumber);
-        return employeeMapper.mapEmployeeListToGetEmployeeResponseList(byFilter);
+        if(idNumber == null){
+            return findAll();
+        }
+        List<Employee> employees = customizedEmployeeRepository.findByFilter(idNumber);
+        return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
     }
 
     private void updateEmployeeFromRequestDto(EmployeeUpdateRequest employeeUpdateRequest, Employee employee) {
