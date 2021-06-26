@@ -1,5 +1,6 @@
 package com.simple.controller;
 
+import com.simple.dto.FilterDto;
 import com.simple.dto.create.request.EmployeeCreateRequest;
 import com.simple.dto.create.response.EmployeeCreateResponse;
 import com.simple.dto.get.response.EmployeeGetResponse;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/employees")
@@ -48,7 +50,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeGetResponse> findBAllOrByFilter(@RequestParam(required = false) String idNumber, Pageable pageable){
-        return employeeService.find(idNumber, pageable);
+    public List<EmployeeGetResponse> findBAllOrByFilter(@Valid FilterDto filterDto, Pageable pageable){
+        return employeeService.find(filterDto, pageable);
     }
 }
