@@ -52,7 +52,11 @@ public class EmployeeService {
     }
 
     public List<EmployeeGetResponse> findAll(Pageable pageable) {
-        List<Employee> employees = employeeRepository.findAll(pageable).toList();
+        List<Employee> employees = entityManager
+                .createQuery("select distinct e from Employee e order by e.id")
+                .setFirstResult(pageable.getPageNumber())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
         return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
     }
 
@@ -68,31 +72,19 @@ public class EmployeeService {
             return findAll(pageable);
         }
 
-        CriteriaQuery<Employee> query = getEmployeeCriteriaQuery(idNumber);
-
-        List<Employee> employees = entityManager.createQuery(query).getResultList();
-
-        if(pageable.getPageSize() > employees.size()){
-            return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
-        } else {
-            return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees).subList(pageable.getPageNumber(), pageable.getPageSize());
-        }
+        List<Employee> employees = findByFilter(idNumber, pageable);
+        return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
     }
 
-    private CriteriaQuery<Employee> getEmployeeCriteriaQuery(String idNumber) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Employee> query = cb.createQuery(Employee.class);
-        Root<Employee> employee = query.from(Employee.class);
-
-        Path<String> idNumPath = employee.get("idNumber");
-
-        List<Predicate> predicates = new ArrayList<>();
-
-        predicates.add(cb.like(idNumPath, "%" + idNumber + "%"));
-
-        query.select(employee)
-                .where(cb.or(predicates.toArray(new Predicate[predicates.size()])));
-        return query;
+    private List<Employee> findByFilter(String idNumber, Pageable pageable) {
+        List<Employee> employees = entityManager
+                .createQuery("select distinct e from Employee e where e.idNumber like " +
+                        ":idNumber order by e.id")
+                .setParameter("idNumber", "%" + idNumber + "%")
+                .setFirstResult(pageable.getPageNumber())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+        return employees;
     }
 
     private void updateEmployeeFromRequestDto(EmployeeUpdateRequest employeeUpdateRequest, Employee employee) {
