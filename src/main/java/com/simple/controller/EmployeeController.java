@@ -7,6 +7,7 @@ import com.simple.dto.update.request.EmployeeUpdateRequest;
 import com.simple.dto.update.response.EmployeeUpdateResponse;
 import com.simple.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,7 +48,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeGetResponse> findBAllOrByFilter(@RequestParam(required = false) String idNumber){
-        return employeeService.find(idNumber);
+    public List<EmployeeGetResponse> findBAllOrByFilter(@RequestParam(required = false) String idNumber, Pageable pageable){
+        return employeeService.find(idNumber, pageable);
     }
 }

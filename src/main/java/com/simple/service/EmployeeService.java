@@ -10,6 +10,7 @@ import com.simple.mapper.EmployeeMapper;
 import com.simple.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,8 +51,12 @@ public class EmployeeService {
         return employeeMapper.mapEmployeeToGetEmployeeResponse(employee);
     }
 
-    public List<EmployeeGetResponse> findAll() {
-        List<Employee> employees = employeeRepository.findAll();
+    public List<EmployeeGetResponse> findAll(Pageable pageable) {
+        List<Employee> employees = entityManager
+                .createQuery("select distinct e from Employee e order by e.id")
+                .setFirstResult(pageable.getPageNumber())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
         return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
     }
 
@@ -62,26 +67,24 @@ public class EmployeeService {
         return employeeMapper.mapEmployeeToUpdateEmployeeResponse(employee);
     }
 
-    public List<EmployeeGetResponse> find(String idNumber) {
+    public List<EmployeeGetResponse> find(String idNumber, Pageable pageable) {
         if(idNumber == null){
-            return findAll();
+            return findAll(pageable);
         }
 
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Employee> query = cb.createQuery(Employee.class);
-        Root<Employee> employee = query.from(Employee.class);
-
-        Path<String> idNumPath = employee.get("idNumber");
-
-        List<Predicate> predicates = new ArrayList<>();
-
-        predicates.add(cb.like(idNumPath, "%" + idNumber + "%"));
-
-        query.select(employee)
-                .where(cb.or(predicates.toArray(new Predicate[predicates.size()])));
-
-        List<Employee> employees = entityManager.createQuery(query).getResultList();
+        List<Employee> employees = findByFilter(idNumber, pageable);
         return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
+    }
+
+    private List<Employee> findByFilter(String idNumber, Pageable pageable) {
+        List<Employee> employees = entityManager
+                .createQuery("select distinct e from Employee e where e.idNumber like " +
+                        ":idNumber order by e.id")
+                .setParameter("idNumber", "%" + idNumber + "%")
+                .setFirstResult(pageable.getPageNumber())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+        return employees;
     }
 
     private void updateEmployeeFromRequestDto(EmployeeUpdateRequest employeeUpdateRequest, Employee employee) {
