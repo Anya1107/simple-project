@@ -63,7 +63,7 @@ public class EmployeeService {
         return employeeMapper.mapEmployeeToUpdateEmployeeResponse(employee);
     }
 
-    public List<EmployeeGetResponse> find(String idNumber, Pageable pageable, Integer page, Integer size) {
+    public List<EmployeeGetResponse> find(String idNumber, Pageable pageable) {
         if(idNumber == null){
             return findAll(pageable);
         }
@@ -72,10 +72,10 @@ public class EmployeeService {
 
         List<Employee> employees = entityManager.createQuery(query).getResultList();
 
-        if(page == null && size == null){
+        if(pageable.getPageSize() > employees.size()){
             return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees);
         } else {
-            return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees).subList(page, size);
+            return employeeMapper.mapEmployeeListToGetEmployeeResponseList(employees).subList(pageable.getPageNumber(), pageable.getPageSize());
         }
     }
 

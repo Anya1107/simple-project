@@ -48,9 +48,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<EmployeeGetResponse> findBAllOrByFilter(@RequestParam(required = false) String idNumber, Pageable pageable,
-                                                        @RequestParam(value = "page", required = false) Integer page,
-                                                        @RequestParam(value = "size", required = false) Integer size){
-        return employeeService.find(idNumber, pageable, page, size);
+    public List<EmployeeGetResponse> findBAllOrByFilter(@RequestParam(required = false) String idNumber, Pageable pageable){
+        return employeeService.find(idNumber, pageable);
     }
 }
