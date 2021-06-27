@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost/simple-project
+    url: jdbc:postgresql://localhost:8432/postgres
     username: postgres
     password: root
+
   jpa:
     show-sql: true
 

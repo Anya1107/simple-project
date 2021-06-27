@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: 14
+      author: anya
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: employee_id
+            baseTableName: employees_card_accounts
+            constraintName: fk_employees_card_accounts
+            referencedColumnNames: id
+            referencedTableName: employees
