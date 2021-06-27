@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -38,10 +39,10 @@ public class CardAccount {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cardAccount")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cardAccount", cascade = CascadeType.ALL)
     private List<Card> cards;
 }
