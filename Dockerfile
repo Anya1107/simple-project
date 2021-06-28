@@ -1,4 +1,4 @@
 FROM java:8
 ADD build/libs/*.jar simple-project.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "git-jar", "simple-project.jar"]
+ENTRYPOINT ["java", "-jar", "simple-project.jar"]

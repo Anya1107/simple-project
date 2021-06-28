@@ -1,8 +1,8 @@
 package com.simple.mapper;
 
+import com.simple.dto.UserDto;
 import com.simple.dto.create.request.EmployeeCreateRequest;
 import com.simple.dto.create.response.EmployeeCreateResponse;
-import com.simple.dto.get.response.CardGetResponse;
 import com.simple.dto.get.response.EmployeeGetResponse;
 import com.simple.dto.update.request.EmployeeUpdateRequest;
 import com.simple.dto.update.response.EmployeeUpdateResponse;
@@ -83,5 +83,12 @@ public class EmployeeMapper {
             employeeGetResponses.add(employeeGetResponse);
         }
         return employeeGetResponses;
+    }
+
+    public UserDto mapEmployeeToUserDto(Employee employee){
+        return UserDto.builder()
+                .username(employee.getUsername())
+                .password(employee.getPassword())
+                .build();
     }
 }

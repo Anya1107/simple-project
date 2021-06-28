@@ -16,3 +16,8 @@ logic-status:
     430: Выдана клиенту
   default-message: Статус карты неизвестен
 
+jwt-constants:
+  secret: simpleproject
+  access-expiration-date: 3m
+  refresh-expiration-date: 2h
+
