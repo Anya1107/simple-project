@@ -46,6 +46,10 @@ public class Employee {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private String username;
+
+    private String password;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee")
     private List<CardAccount> cardAccounts;
 

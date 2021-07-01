@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: 17
+      author: anya
+      changes:
+        - addUniqueConstraint:
+            columnNames: username
+            tableName: employees
+        - addUniqueConstraint:
+            columnNames: id_number
+            tableName: employees
+        - addUniqueConstraint:
+            columnNames: number
+            tableName: cards
+        - addUniqueContraint:
+            columnNames: name
+            tableName: roles
+        - addUniqueContraint:
+            columnNames: bill_number
+            tableName: card_accounts
