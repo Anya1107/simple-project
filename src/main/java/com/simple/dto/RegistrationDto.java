@@ -1,6 +1,6 @@
 package com.simple.dto;
 
-import com.simple.dto.get.response.EmployeeGetResponse;
+import com.simple.dto.create.request.EmployeeCreateRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,5 +10,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class RegistrationDto {
     private UserDto userDto;
-    private EmployeeGetResponse employee;
+    private EmployeeCreateRequest employee;
 }

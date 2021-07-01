@@ -1,6 +1,5 @@
 package com.simple.dto;
 
-import com.simple.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,5 +14,4 @@ import lombok.Setter;
 public class UserDto {
     private String username;
     private String password;
-    private Role role;
 }

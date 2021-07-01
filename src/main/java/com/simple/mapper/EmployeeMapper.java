@@ -1,6 +1,6 @@
 package com.simple.mapper;
 
-import com.simple.dto.UserDto;
+import com.simple.dto.RegistrationDto;
 import com.simple.dto.create.request.EmployeeCreateRequest;
 import com.simple.dto.create.response.EmployeeCreateResponse;
 import com.simple.dto.get.response.EmployeeGetResponse;
@@ -85,10 +85,10 @@ public class EmployeeMapper {
         return employeeGetResponses;
     }
 
-    public UserDto mapEmployeeToUserDto(Employee employee){
-        return UserDto.builder()
-                .username(employee.getUsername())
-                .password(employee.getPassword())
-                .build();
+    public Employee mapRegDtoToEmployee(RegistrationDto registrationDto){
+        Employee employee = mapCreateEmployeeRequestToEmployee(registrationDto.getEmployee());
+        employee.setUsername(registrationDto.getUserDto().getUsername());
+        employee.setPatronymic(registrationDto.getUserDto().getPassword());
+        return employee;
     }
 }

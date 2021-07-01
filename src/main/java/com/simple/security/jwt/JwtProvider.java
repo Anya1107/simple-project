@@ -1,52 +1,45 @@
 package com.simple.security.jwt;
 
-import com.simple.properties.JwtProperties;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.simple.entity.Employee;
+import com.simple.mapper.RoleMapper;
+import com.simple.repository.EmployeeRepository;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
-import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
-public class JwtProvider {
+public class JwtProvider implements AuthenticationProvider {
 
-    private final String secret;
-    private final Duration accessExpiration;
-    private final Duration refreshExpiration;
+    private final RoleMapper roleMapper;
+    private final EmployeeRepository employeeRepository;
 
-    public JwtProvider(JwtProperties jwtProperties) {
-        secret = jwtProperties.getSecret();
-        accessExpiration = jwtProperties.getAccessExpirationDate();
-        refreshExpiration = jwtProperties.getRefreshExpirationDate();
+    public JwtProvider(RoleMapper roleMapper, EmployeeRepository employeeRepository) {
+        this.roleMapper = roleMapper;
+        this.employeeRepository = employeeRepository;
     }
 
-    public String generateAccessToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + accessExpiration.toMillis()))
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
+
+    @Override
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        String username = authentication.getName();
+        Employee employee = employeeRepository.findByUsername(username);
+        List<String> roleNames = roleMapper.mapRoleListToString(employee.getRoles());
+        List<SimpleGrantedAuthority> roles = roleNames.stream().map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+        User userDetails = new User(employee.getUsername(), employee.getPassword(), true, true,
+                true, true, roles);
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
-    public String generateRefreshToken(String username){
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration.toMillis()))
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
-    }
-
-    public boolean validateToken(String token){
-        Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-        return true;
-    }
-
-    public String getUsernameFromToken(String token){
-        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+    @Override
+    public boolean supports(Class<?> authentication) {
+        return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 }
